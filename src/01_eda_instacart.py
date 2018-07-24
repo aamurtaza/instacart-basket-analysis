@@ -16,6 +16,21 @@ def load_data():
     return data_in_dict
 
 
+def join_frames(left, right, key=None):
+    """ Join/Merge two DataFrames
+
+    :param left: Left table (DataFrame)
+    :param right: Right table (DataFrame)
+    :param key: key for join
+    :return: Merged DataFrame
+    """
+    if key is None:
+        print("Key for join is None.")
+        return None
+    joined = pd.merge(left, right, on=key)
+    return joined
+
+
 def n_products(data_frame, n=10, view_type='head'):
     """ Finds the top or bottom n products in orders/sales.
 
@@ -49,3 +64,6 @@ if __name__ == '__main__':
 
     # find top n best selling products
     top_n_products = n_products(order_products.iloc[:, :], view_type='head')
+    reduced_products = data_frames['products'].copy()
+    reduced_products = reduced_products.loc[:, ['product_id', 'product_name']]
+    merged = join_frames(top_n_products, reduced_products, key='product_id')
