@@ -2,6 +2,7 @@
 """
 import pandas as pd
 from pathlib import Path
+import matplotlib.pyplot as plt
 
 
 def load_data():
@@ -50,6 +51,19 @@ def n_products(data_frame, n=10, view_type='head'):
         print('view_type can either be head or tail.')
 
 
+def plot_n_product(data_frame):
+    """ Plot n products using pandas.
+
+    :param data_frame: DataFrame containing n products data.
+    :return: None
+    """
+    data_frame.copy().rename(
+        columns={'product_name': 'Products',
+                 'order_id_count': 'Total Order Count'}).plot(
+        x='Products', y='Total Order Count', kind='barh',
+        title='Best Selling Products.', figsize=(12, 8))
+
+
 if __name__ == '__main__':
     # load data into data frames
     data_frames = load_data()
@@ -57,6 +71,9 @@ if __name__ == '__main__':
         print('Download instacart market analysis data-set using the link: '
               'https://www.instacart.com/datasets/grocery-shopping-2017')
         exit(0)
+
+    # set rcParams to adjust auto-layout for plots.
+    plt.rcParams.update({'figure.autolayout': True})
 
     # data frames
     order_products = data_frames['order_products_train']
@@ -67,3 +84,4 @@ if __name__ == '__main__':
     reduced_products = data_frames['products'].copy()
     reduced_products = reduced_products.loc[:, ['product_id', 'product_name']]
     merged = join_frames(top_n_products, reduced_products, key='product_id')
+    plot_n_product(merged)
