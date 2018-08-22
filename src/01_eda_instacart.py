@@ -51,6 +51,21 @@ def n_products(data_frame, n=10, view_type='head'):
         print('view_type can either be head or tail.')
 
 
+def orders_by_dow(data_frame):
+    """ Gives orders_count by day of week.
+
+    :param data_frame: DataFrame containing orders data.
+    :return: DataFrame of order_ids count by day of week.
+    """
+    grouped = data_frame.groupby(['order_dow'], as_index=False)
+    # count by column: 'order_id'
+    count = grouped.agg({'order_id': 'count'}).rename(
+        columns={'order_id': 'order_id_count'})
+    count['week_day'] = ['Saturday', 'Sunday', 'Monday', 'Tuesday',
+                         'Wednesday', 'Thursday', 'Friday']
+    return count
+
+
 def plot_n_product(data_frame):
     """ Plot n products using pandas.
 
@@ -98,3 +113,7 @@ if __name__ == '__main__':
     reduced_products = reduced_products.loc[:, ['product_id', 'product_name']]
     merged = join_frames(top_n_products, reduced_products, key='product_id')
     plot_n_product(merged)
+
+    # find order counts by day of week
+    orders_dow = orders_by_dow(orders)
+    plot_orders_dow(orders_dow)
