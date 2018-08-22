@@ -64,6 +64,19 @@ def plot_n_product(data_frame):
         title='Best Selling Products.', figsize=(12, 8))
 
 
+def plot_orders_dow(data_frame):
+    """ Plot n products using pandas.
+
+    :param data_frame: DataFrame containing order counts by day of week.
+    :return: None
+    """
+    data_frame.copy().rename(
+        columns={'week_day': 'Days',
+                 'order_id_count': 'Total Order Count'}).plot(
+        x='Days', y='Total Order Count', kind='barh',
+        title='Order Counts by Week Days.', figsize=(8, 8))
+
+
 if __name__ == '__main__':
     # load data into data frames
     data_frames = load_data()
