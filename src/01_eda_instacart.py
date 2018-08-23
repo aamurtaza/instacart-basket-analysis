@@ -104,6 +104,19 @@ def plot_orders_dow(data_frame):
         title='Order Counts by Week Days.', figsize=(8, 8))
 
 
+def plot_orders_hours(data_frame):
+    """ Plot n products using pandas.
+
+    :param data_frame: DataFrame containing order counts by hour of the days.
+    :return: None
+    """
+    data_frame.copy().rename(
+        columns={'order_hour_of_day': 'Hours',
+                 'order_id_count': 'Order Count'}).plot(
+        x='Hours', y='Order Count', kind='bar', alpha=0.5, rot=45,
+        title='Order Count by Daily Hours.', figsize=(8, 8))
+
+
 if __name__ == '__main__':
     # load data into data frames
     data_frames = load_data()
@@ -129,3 +142,7 @@ if __name__ == '__main__':
     # find order counts by day of week
     orders_dow = orders_by_dow(orders)
     plot_orders_dow(orders_dow)
+
+    # find order counts by hour of the days
+    orders_hours = orders_by_hours(orders)
+    plot_orders_hours(orders_hours)
