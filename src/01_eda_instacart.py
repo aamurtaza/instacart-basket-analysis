@@ -78,6 +78,17 @@ def orders_by_hours(data_frame):
     return count
 
 
+def reordered_by_freq(data_frame):
+    """ Gives product reordered/reordered_not count.
+
+    :param data_frame: DataFrame containing order_products data.
+    :return: DataFrame containing product reordered/reordered_not count.
+    """
+    grouped = data_frame.groupby(['reordered'])
+    count = grouped.size().reset_index(name='count')
+    return count
+
+
 def plot_n_product(data_frame):
     """ Plot n products using pandas.
 
@@ -146,3 +157,6 @@ if __name__ == '__main__':
     # find order counts by hour of the days
     orders_hours = orders_by_hours(orders)
     plot_orders_hours(orders_hours)
+
+    # find how many products are reordered
+    reordered_freq = reordered_by_freq(order_products)
