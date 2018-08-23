@@ -128,6 +128,17 @@ def plot_orders_hours(data_frame):
         title='Order Count by Daily Hours.', figsize=(8, 8))
 
 
+def plot_reorder_freq(data_frame):
+    """ Plot n products using pandas.
+
+    :param data_frame: DataFrame containing how many products are reordered.
+    :return: None
+    """
+    data_frame['count'].plot.pie(labels=['not_reordered', 'reordered'],
+                                 colors=['r', 'c'], autopct='%.2f',
+                                 fontsize=15, figsize=(6, 6))
+
+
 if __name__ == '__main__':
     # load data into data frames
     data_frames = load_data()
@@ -160,3 +171,4 @@ if __name__ == '__main__':
 
     # find how many products are reordered
     reordered_freq = reordered_by_freq(order_products)
+    plot_reorder_freq(reordered_freq)
