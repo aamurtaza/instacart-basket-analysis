@@ -66,6 +66,18 @@ def orders_by_dow(data_frame):
     return count
 
 
+def orders_by_hours(data_frame):
+    """ Gives orders_count by hour of the days.
+
+    :param data_frame: DataFrame containing orders data.
+    :return: DataFrame of order_ids count by hour of the days.
+    """
+    grouped = data_frame.groupby(['order_hour_of_day'], as_index=False)
+    count = grouped.agg({'order_id': 'count'}).rename(
+        columns={'order_id': 'order_id_count'})
+    return count
+
+
 def plot_n_product(data_frame):
     """ Plot n products using pandas.
 
