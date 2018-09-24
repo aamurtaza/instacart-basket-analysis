@@ -154,21 +154,23 @@ if __name__ == '__main__':
     # data frames
     order_products = data_frames['order_products__train']
     orders = data_frames['orders']
+    department = data_frames['departments']
+    products = data_frames['products']
 
-    # # find top n best selling products
-    # top_n_products = n_products(order_products.iloc[:, :], view_type='head')
-    # reduced_products = data_frames['products'].copy()
-    # reduced_products = reduced_products.loc[:, ['product_id', 'product_name']]
-    # merged = join_frames(top_n_products, reduced_products, key='product_id')
-    # plot_n_product(merged)
-    #
-    # # find order counts by day of week
-    # orders_dow = orders_by_dow(orders)
-    # plot_orders_dow(orders_dow)
-    #
-    # # find order counts by hour of the days
-    # orders_hours = orders_by_hours(orders)
-    # plot_orders_hours(orders_hours)
+    # find top n best selling products
+    top_n_products = n_products(order_products.iloc[:, :], view_type='head')
+    reduced_products = data_frames['products'].copy()
+    reduced_products = reduced_products.loc[:, ['product_id', 'product_name']]
+    merged = join_frames(top_n_products, reduced_products, key='product_id')
+    plot_n_product(merged)
+
+    # find order counts by day of week
+    orders_dow = orders_by_dow(orders)
+    plot_orders_dow(orders_dow)
+
+    # find order counts by hour of the days
+    orders_hours = orders_by_hours(orders)
+    plot_orders_hours(orders_hours)
 
     # Co-relations between DOW and HOD using head-map
     corr_dow_hod = orders.groupby(['order_dow', 'order_hour_of_day'],
@@ -176,6 +178,11 @@ if __name__ == '__main__':
     corr_dow_hod = corr_dow_hod.pivot('order_dow',
                                       'order_hour_of_day', 'order_id')
     ax = sns.heatmap(corr_dow_hod, cmap='BuPu')
+
+    # which department has the most order
+    dep_products = join_frames(products, department,
+                               key='department_id').loc[:, ['product_id', 'department']]
+    ax = sns.countplot(y='department', data=dep_products)
 
     # find how many products are reordered
     reordered_freq = reordered_by_freq(order_products)
